@@ -196,7 +196,7 @@ print(cursor.fetchone()[0])
 print()
 
 ################################################
-# How many members were included more than once?
+# How many members were included more than once? (in all the rosters)
 ################################################
 cursor.execute("""
 SELECT COUNT(*) FROM
@@ -215,7 +215,91 @@ GROUP BY Person_Id
 HAVING COUNT(*) > 1);
 """)
 
-print("How many members were included more than once?")
+print("How many members were included more than once? (in all the rosters)")
+print(cursor.fetchone()[0])
+print()
+
+################################################
+# How many members were included more than once? (only counting ones that made it into the summary table)
+################################################
+cursor.execute("""
+SELECT COUNT(*) FROM
+(SELECT Person_Id, COUNT(*) FROM
+(SELECT Person_Id FROM roster_1
+WHERE
+	CASE
+		WHEN eligibility_start_date LIKE '__/__/____'
+			THEN (substr(eligibility_start_date,7,4)||'-'||substr(eligibility_start_date,1,2)||'-'||substr(eligibility_start_date,4,2))
+		ELSE eligibility_start_date
+	END < "2022-05-01"
+	AND
+	CASE
+		WHEN eligibility_end_date LIKE '__/__/____'
+			THEN (substr(eligibility_end_date,7,4)||'-'||substr(eligibility_end_date,1,2)||'-'||substr(eligibility_end_date,4,2))
+		ELSE eligibility_end_date
+	END > "2022-03-31"
+UNION ALL
+SELECT Person_Id FROM roster_2
+WHERE
+	CASE
+		WHEN eligibility_start_date LIKE '__/__/____'
+			THEN (substr(eligibility_start_date,7,4)||'-'||substr(eligibility_start_date,1,2)||'-'||substr(eligibility_start_date,4,2))
+		ELSE eligibility_start_date
+	END < "2022-05-01"
+	AND
+	CASE
+		WHEN eligibility_end_date LIKE '__/__/____'
+			THEN (substr(eligibility_end_date,7,4)||'-'||substr(eligibility_end_date,1,2)||'-'||substr(eligibility_end_date,4,2))
+		ELSE eligibility_end_date
+	END > "2022-03-31"
+UNION ALL
+SELECT Person_Id FROM roster_3
+WHERE
+	CASE
+		WHEN eligibility_start_date LIKE '__/__/____'
+			THEN (substr(eligibility_start_date,7,4)||'-'||substr(eligibility_start_date,1,2)||'-'||substr(eligibility_start_date,4,2))
+		ELSE eligibility_start_date
+	END < "2022-05-01"
+	AND
+	CASE
+		WHEN eligibility_end_date LIKE '__/__/____'
+			THEN (substr(eligibility_end_date,7,4)||'-'||substr(eligibility_end_date,1,2)||'-'||substr(eligibility_end_date,4,2))
+		ELSE eligibility_end_date
+	END > "2022-03-31"
+UNION ALL
+SELECT Person_Id FROM roster_4
+WHERE
+	CASE
+		WHEN eligibility_start_date LIKE '__/__/____'
+			THEN (substr(eligibility_start_date,7,4)||'-'||substr(eligibility_start_date,1,2)||'-'||substr(eligibility_start_date,4,2))
+		ELSE eligibility_start_date
+	END < "2022-05-01"
+	AND
+	CASE
+		WHEN eligibility_end_date LIKE '__/__/____'
+			THEN (substr(eligibility_end_date,7,4)||'-'||substr(eligibility_end_date,1,2)||'-'||substr(eligibility_end_date,4,2))
+		ELSE eligibility_end_date
+	END > "2022-03-31"
+UNION ALL
+SELECT Person_Id FROM roster_5
+WHERE
+	CASE
+		WHEN eligibility_start_date LIKE '__/__/____'
+			THEN (substr(eligibility_start_date,7,4)||'-'||substr(eligibility_start_date,1,2)||'-'||substr(eligibility_start_date,4,2))
+		ELSE eligibility_start_date
+	END < "2022-05-01"
+	AND
+	CASE
+		WHEN eligibility_end_date LIKE '__/__/____'
+			THEN (substr(eligibility_end_date,7,4)||'-'||substr(eligibility_end_date,1,2)||'-'||substr(eligibility_end_date,4,2))
+		ELSE eligibility_end_date
+	END > "2022-03-31"
+ORDER BY Person_Id)
+GROUP BY Person_Id
+HAVING COUNT(*) > 1);
+""")
+
+print("How many members were included more than once?  (only counting ones that made it into the summary table)")
 print(cursor.fetchone()[0])
 print()
 
