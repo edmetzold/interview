@@ -180,6 +180,8 @@ WHERE
 ;
 """)
 
+connection.commit()
+
 ################################################
 # How many distinct members are eligible in April 2022?
 ################################################
