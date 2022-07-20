@@ -355,8 +355,6 @@ FROM model_scores_by_zip;
 
 highest_zip = cursor.fetchone()[0]
 
-print("highest zip = ",highest_zip)
-
 cursor.execute("""
 SELECT *
 FROM std_member_info
